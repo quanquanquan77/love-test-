@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恋爱心理测评</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+        h1 { text-align: center; color: #e91e63; margin-bottom: 30px; }
+        .question { margin-bottom: 30px; padding: 20px; background: #fff5f7; border-radius: 10px; }
+        .question-title { font-size: 1.1em; color: #333; margin-bottom: 15px; }
+        .question-num { color: #e91e63; font-weight: bold; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .options label {
+            display: block;
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .options label:hover { border-color: #e91e63; }
+        .options input[type="radio"] { margin-right: 10px; }
+        .options input[type="radio"]:checked + span { color: #e91e63; font-weight: bold; }
+        .btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background: linear-gradient(90deg, #ff9a9e, #e91e63);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        #result { display: none; text-align: center; padding: 30px; }
+        .result-type { font-size: 2em; color: #e91e63; margin: 20px 0; }
+        .result-desc { text-align: left; line-height: 1.8; color: #666; background: #fff5f7; padding: 20px; border-radius: 10px; }
+        .scores { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; text-align: left; }
+        .score-item { background: #f9f9f9; padding: 15px; border-radius: 10px; }
+        .score-name { color: #e91e63; font-weight: bold; }
+        .score-bar { height: 8px; background: #eee; border-radius: 4px; margin-top: 8px; }
+        .score-fill { height: 100%; background: linear-gradient(90deg, #ff9a9e, #e91e63); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>恋爱心理测评</h1>
+
+        <form id="quiz">
+            <div class="question">
+                <div class="question-title"><span class="question-num">1.</span> 当伴侣没有及时回复消息时，你通常会？</div>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="4"><span>焦虑不安，反复查看手机</span></label>
+                    <label><input type="radio" name="q1" value="2"><span>有点在意，但能理解对方可能在忙</span></label>
+                    <label><input type="radio" name="q1" value="1"><span>无所谓，各自有各自的空间</span></label>
+                    <label><input type="radio" name="q1" value="3"><span>主动找其他事情做，等对方有空再聊</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">2.</span> 你认为理想的恋爱关系应该是？</div>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="2"><span>两人时刻腻在一起，分享所有事情</span></label>
+                    <label><input type="radio" name="q2" value="4"><span>亲密但保持一定独立空间</span></label>
+                    <label><input type="radio" name="q2" value="1"><span>各自独立，偶尔相聚</span></label>
+                    <label><input type="radio" name="q2" value="4"><span>深度连接，但尊重彼此的个人生活</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">3.</span> 面对感情中的矛盾，你倾向于？</div>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="3"><span>直接表达不满，希望立刻解决</span></label>
+                    <label><input type="radio" name="q3" value="4"><span>先冷静一下，再找时机沟通</span></label>
+                    <label><input type="radio" name="q3" value="1"><span>回避冲突，希望问题自己消失</span></label>
+                    <label><input type="radio" name="q3" value="4"><span>尝试理解对方立场，寻求妥协</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">4.</span> 你对"爱情"的第一反应是？</div>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="3"><span>心动和激情</span></label>
+                    <label><input type="radio" name="q4" value="4"><span>陪伴和温暖</span></label>
+                    <label><input type="radio" name="q4" value="3"><span>责任和承诺</span></label>
+                    <label><input type="radio" name="q4" value="4"><span>成长和理解</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">5.</span> 当伴侣与异性朋友来往时，你会？</div>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="1"><span>感到威胁和不安</span></label>
+                    <label><input type="radio" name="q5" value="3"><span>有些介意但选择信任</span></label>
+                    <label><input type="radio" name="q5" value="4"><span>完全不在意</span></label>
+                    <label><input type="radio" name="q5" value="4"><span>根据具体情况判断</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">6.</span> 你更看重伴侣的哪个特质？</div>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="2"><span>外表和吸引力</span></label>
+                    <label><input type="radio" name="q6" value="4"><span>性格和三观</span></label>
+                    <label><input type="radio" name="q6" value="3"><span>能力和上进心</span></label>
+                    <label><input type="radio" name="q6" value="3"><span>对你的态度和付出</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">7.</span> 遇到喜欢的人，你通常会？</div>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="4"><span>主动出击，直接表白</span></label>
+                    <label><input type="radio" name="q7" value="3"><span>释放信号，等待对方回应</span></label>
+                    <label><input type="radio" name="q7" value="2"><span>暗中观察，确定后再行动</span></label>
+                    <label><input type="radio" name="q7" value="1"><span>很难主动，除非对方先表示</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">8.</span> 你如何看待恋爱中的个人空间？</div>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="1"><span>恋爱了就应该把时间都给对方</span></label>
+                    <label><input type="radio" name="q8" value="3"><span>需要空间但要控制在合理范围</span></label>
+                    <label><input type="radio" name="q8" value="4"><span>个人空间和恋爱同样重要</span></label>
+                    <label><input type="radio" name="q8" value="2"><span>有时觉得恋爱太占用私人时间</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">9.</span> 伴侣心情不好时，你会？</div>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="2"><span>紧张地想办法让对方开心</span></label>
+                    <label><input type="radio" name="q9" value="4"><span>陪在身边，给予支持</span></label>
+                    <label><input type="radio" name="q9" value="3"><span>给对方空间，等ta想说再说</span></label>
+                    <label><input type="radio" name="q9" value="3"><span>分析问题，提供解决方案</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">10.</span> 你相信一见钟情吗？</div>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="3"><span>相信，爱情就是那种电光火石的感觉</span></label>
+                    <label><input type="radio" name="q10" value="4"><span>相信但觉得需要时间验证</span></label>
+                    <label><input type="radio" name="q10" value="3"><span>不太相信，感情需要慢慢培养</span></label>
+                    <label><input type="radio" name="q10" value="1"><span>完全不信，那只是荷尔蒙</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">11.</span> 分手后，你通常会？</div>
+                <div class="options">
+                    <label><input type="radio" name="q11" value="1"><span>很长时间无法走出来</span></label>
+                    <label><input type="radio" name="q11" value="3"><span>难过一阵，然后努力向前看</span></label>
+                    <label><input type="radio" name="q11" value="4"><span>理性分析，吸取教训</span></label>
+                    <label><input type="radio" name="q11" value="4"><span>很快就能调整好心态</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">12.</span> 你认为恋爱中最不能容忍的是？</div>
+                <div class="options">
+                    <label><input type="radio" name="q12" value="4"><span>欺骗和隐瞒</span></label>
+                    <label><input type="radio" name="q12" value="4"><span>冷暴力和忽视</span></label>
+                    <label><input type="radio" name="q12" value="4"><span>控制欲太强</span></label>
+                    <label><input type="radio" name="q12" value="3"><span>没有共同成长</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">13.</span> 当感情遇到问题时，你更倾向于？</div>
+                <div class="options">
+                    <label><input type="radio" name="q13" value="2"><span>和朋友倾诉寻求建议</span></label>
+                    <label><input type="radio" name="q13" value="2"><span>自己消化，不想让别人知道</span></label>
+                    <label><input type="radio" name="q13" value="4"><span>直接和伴侣沟通</span></label>
+                    <label><input type="radio" name="q13" value="2"><span>冷处理，等情绪平复</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">14.</span> 你理想中的约会是？</div>
+                <div class="options">
+                    <label><input type="radio" name="q14" value="3"><span>精心策划的浪漫活动</span></label>
+                    <label><input type="radio" name="q14" value="4"><span>舒适随意的日常相处</span></label>
+                    <label><input type="radio" name="q14" value="3"><span>一起尝试新鲜事物</span></label>
+                    <label><input type="radio" name="q14" value="4"><span>安静地待在一起就好</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">15.</span> 对于伴侣的过去，你的态度是？</div>
+                <div class="options">
+                    <label><input type="radio" name="q15" value="1"><span>不想知道，知道会介意</span></label>
+                    <label><input type="radio" name="q15" value="3"><span>好奇但可以接受</span></label>
+                    <label><input type="radio" name="q15" value="4"><span>过去就是过去，不太在意</span></label>
+                    <label><input type="radio" name="q15" value="4"><span>希望了解，这是认识对方的一部分</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">16.</span> 你觉得恋爱会改变一个人吗？</div>
+                <div class="options">
+                    <label><input type="radio" name="q16" value="2"><span>会，应该为了对方改变</span></label>
+                    <label><input type="radio" name="q16" value="3"><span>会有一些改变，但核心不变</span></label>
+                    <label><input type="radio" name="q16" value="2"><span>不应该刻意改变自己</span></label>
+                    <label><input type="radio" name="q16" value="4"><span>互相磨合，共同改变</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">17.</span> 如果伴侣比你优秀很多，你会？</div>
+                <div class="options">
+                    <label><input type="radio" name="q17" value="2"><span>有压力，担心配不上</span></label>
+                    <label><input type="radio" name="q17" value="4"><span>被激励，想要一起进步</span></label>
+                    <label><input type="radio" name="q17" value="3"><span>无所谓，各有各的优点</span></label>
+                    <label><input type="radio" name="q17" value="1"><span>可能会有些自卑</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">18.</span> 你对异地恋的态度是？</div>
+                <div class="options">
+                    <label><input type="radio" name="q18" value="1"><span>坚决不行，受不了见不到</span></label>
+                    <label><input type="radio" name="q18" value="4"><span>困难但愿意为爱尝试</span></label>
+                    <label><input type="radio" name="q18" value="4"><span>可以接受，各自也能成长</span></label>
+                    <label><input type="radio" name="q18" value="3"><span>不太看好，但不排斥</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">19.</span> 恋爱中你更像？</div>
+                <div class="options">
+                    <label><input type="radio" name="q19" value="3"><span>付出型，喜欢照顾对方</span></label>
+                    <label><input type="radio" name="q19" value="2"><span>索取型，希望被照顾</span></label>
+                    <label><input type="radio" name="q19" value="4"><span>平等型，互相付出</span></label>
+                    <label><input type="radio" name="q19" value="2"><span>独立型，各管各的</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-title"><span class="question-num">20.</span> 你认为维持长期关系最重要的是？</div>
+                <div class="options">
+                    <label><input type="radio" name="q20" value="2"><span>保持激情和浪漫</span></label>
+                    <label><input type="radio" name="q20" value="4"><span>相互信任和尊重</span></label>
+                    <label><input type="radio" name="q20" value="4"><span>有效沟通和理解</span></label>
+                    <label><input type="radio" name="q20" value="4"><span>共同目标和价值观</span></label>
+                </div>
+            </div>
+
+            <button type="button" class="btn" onclick="showResult()">查看结果</button>
+        </form>
+
+        <div id="result">
+            <h2>测评结果</h2>
+            <div class="result-type" id="resultType"></div>
+            <div class="scores" id="scores"></div>
+            <div class="result-desc" id="resultDesc"></div>
+            <button class="btn" onclick="location.reload()">重新测评</button>
+        </div>
+    </div>
+
+    <script>
+        function showResult() {
+            var total = 0;
+            var answered = 0;
+
+            for (var i = 1; i <= 20; i++) {
+                var radios = document.getElementsByName('q' + i);
+                for (var j = 0; j < radios.length; j++) {
+                    if (radios[j].checked) {
+                        total += parseInt(radios[j].value);
+                        answered++;
+                        break;
+                    }
+                }
+            }
+
+            if (answered < 20) {
+                alert('请完成所有题目（已完成 ' + answered + '/20）');
+                return;
+            }
+
+            var avg = total / 20;
+            var type, desc;
+
+            if (avg >= 3.5) {
+                type = '成熟稳定型';
+                desc = '你在恋爱中表现得成熟而稳定。你既能给予伴侣足够的亲密感，又能保持健康的个人边界。你善于沟通，能够理性地处理感情中的问题，同时也不失浪漫和温情。你的恋爱观念健康，懂得在关系中追求共同成长。建议继续保持这种平衡，同时也要记得偶尔展现脆弱的一面，让伴侣感受到被需要。';
+            } else if (avg >= 2.8) {
+                type = '温暖依恋型';
+                desc = '你是一个重视情感连接的人，渴望与伴侣建立深厚的亲密关系。你愿意为爱付出，也期待得到同等的回应。在感情中你比较感性，有时可能会因为太在意对方而产生不安全感。建议在爱对方的同时，也要记得爱自己，培养更多独立的兴趣爱好，这样反而能让关系更加健康。';
+            } else if (avg >= 2.0) {
+                type = '理性独立型';
+                desc = '你在恋爱中保持着理性和独立。你不会轻易被感情冲昏头脑，倾向于先观察再投入。虽然这让你避免了很多不必要的伤害，但有时也可能让伴侣觉得你不够热情。建议适当表达自己的情感，让对方感受到你的在乎。记住，适度的依赖不是软弱，而是信任的表现。';
+            } else {
+                type = '自我保护型';
+                desc = '你在感情中比较谨慎，可能曾经受过伤害，所以会下意识地保护自己。你害怕过度投入后受伤，所以常常保持距离。这没有什么不好，每个人都有自己的节奏。建议你慢慢尝试打开心扉，信任是需要练习的。找一个让你感到安全的人，一步步地建立连接，你值得拥有美好的爱情。';
+            }
+
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('resultType').innerText = type;
+            document.getElementById('resultDesc').innerText = desc;
+
+            var percent = (avg / 4) * 100;
+            document.getElementById('scores').innerHTML =
+                '<div class="score-item">' +
+                '<div class="score-name">综合得分</div>' +
+                '<div>' + avg.toFixed(1) + ' / 4.0</div>' +
+                '<div class="score-bar"><div class="score-fill" style="width:' + percent + '%"></div></div>' +
+                '</div>';
+        }
+    </script>
+</body>
+</html>
