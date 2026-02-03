@@ -2,16 +2,65 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>恋爱心理测评</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
             min-height: 100vh;
             padding: 20px;
         }
+        /* 加载动画 */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loading-heart {
+            font-size: 60px;
+            animation: heartbeat 1s ease-in-out infinite;
+        }
+        .loading-text {
+            margin-top: 20px;
+            color: #e91e63;
+            font-size: 18px;
+        }
+        .loading-bar {
+            width: 200px;
+            height: 6px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 3px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .loading-progress {
+            height: 100%;
+            background: #e91e63;
+            border-radius: 3px;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+        .loaded #loading { display: none; }
+        .container { opacity: 0; transition: opacity 0.3s; }
+        .loaded .container { opacity: 1; }
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -61,6 +110,15 @@
     </style>
 </head>
 <body>
+    <!-- 加载动画 -->
+    <div id="loading">
+        <div class="loading-heart">💕</div>
+        <div class="loading-text">正在加载测评...</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
     <div class="container">
         <h1>恋爱心理测评</h1>
 
@@ -278,6 +336,18 @@
     </div>
 
     <script>
+        // 页面加载完成后隐藏loading
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.body.classList.add('loaded');
+            }, 500); // 给一点缓冲时间确保渲染完成
+        });
+
+        // 备用：如果load事件太慢，3秒后强制显示
+        setTimeout(function() {
+            document.body.classList.add('loaded');
+        }, 3000);
+
         function showResult() {
             var total = 0;
             var answered = 0;
